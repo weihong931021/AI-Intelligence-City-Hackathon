@@ -1,5 +1,12 @@
 # Requirements Document
 
+> **狀態：已結案（2026-09-10）。**
+> 本規格撰寫於官方資料尚未取得時。命題文件與資料集已於 2026/09/07 備存至
+> [官方資料](../../../官方資料/README.md)（共 4 份 PDF，已核對完整性），本規格的目的已達成。
+> 未完成的任務（報告產生器、協調器、CLI）不再繼續；已完成的模組保留於
+> `src/import_drive_archive/` 供日後重跑匯入時參考。
+> 專案主線已移至 [appraisal-review-assistant](../appraisal-review-assistant/requirements.md)。
+
 ## Introduction
 
 本功能定義一套可稽核的匯入流程，涵蓋指定的遠端資料夾與工作區既有壓縮檔，並在處理完成後產生繁體中文內容說明。本文件僅描述預期行為，不執行下載、解壓縮或檔案整理。

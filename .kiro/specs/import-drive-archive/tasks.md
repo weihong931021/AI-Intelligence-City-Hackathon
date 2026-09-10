@@ -1,5 +1,11 @@
 # Implementation Plan: Import Drive Archive
 
+> **狀態：已結案（2026-09-10）。**
+> 任務 1–5 已完成，官方資料已備妥於 [官方資料](../../../官方資料/README.md)，匯入目的已達成。
+> 任務 6.2、7、8、9（重複群組索引、報告產生器、協調器與 CLI、品質檢查）**不再進行**；
+> 對應的 `reporter.py`、`orchestrator.py`、`cli.py` 未建立，下方勾選狀態保留為當時的實際進度。
+> 後續開發請見 [appraisal-review-assistant](../appraisal-review-assistant/tasks.md)。
+
 ## Overview
 
 以 Python 3.12 依序建立可稽核匯入管線。所有任務僅包含程式碼、測試與自動化驗證；測試子任務以 `*` 標示為可選。每個頂層任務內的子任務依編號順序執行。
