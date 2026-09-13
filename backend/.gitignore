@@ -1,0 +1,11 @@
+# secrets (AWS credentials)
+.env
+.env.*
+!.env.example
+
+# python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/

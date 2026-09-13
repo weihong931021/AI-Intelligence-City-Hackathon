@@ -1,0 +1,179 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@source "../node_modules/@assistant-ui/react/dist";
+
+/* Codex 風格：只做深色。色值對照 Codex 桌面版（macOS）量測。 */
+:root {
+  --background: #111111;
+  --foreground: #ececec;
+  --card: #1a1a1a;
+  --card-foreground: #ececec;
+  --popover: #1a1a1a;
+  --popover-foreground: #ececec;
+  --primary: #ffffff;
+  --primary-foreground: #0f0f0f;
+  --secondary: #2c2c2c;
+  --secondary-foreground: #ececec;
+  --muted: #2b2b2b;
+  --muted-foreground: #9a9a9a;
+  --accent: #262626;
+  --accent-foreground: #ececec;
+  --destructive: #f87171;
+  --border: #2a2a2a;
+  --input: #2a2a2a;
+  --ring: #5c5c5c;
+  /* 空白狀態輸入框上方的 context chip 條 */
+  --chip-strip: #191919;
+  /* 右側工作區「尚未開啟面板」的清單列 */
+  --list-row: #1c1c1c;
+  /* 左右兩欄之間的 1px 分隔線 */
+  --divider: #1f1f1f;
+  --scrollbar-thumb: #3a3a3a;
+  --selection: #3d3d3d;
+  --radius: 0.75rem;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chip-strip: var(--chip-strip);
+  --color-list-row: var(--list-row);
+  --color-divider: var(--divider);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  ::selection {
+    background: var(--selection);
+    color: var(--foreground);
+  }
+}
+
+/* 捲軸：平常隱形，滑到捲動區上面才淡入（macOS overlay scrollbar 的感覺）。
+   Chromium/Safari 走 ::-webkit-scrollbar；Firefox 不認它，改走標準屬性。
+   兩者不能同時給 Chromium：一旦 scrollbar-width/color 非 auto，Chromium 會忽略 ::-webkit-scrollbar。 */
+@supports not selector(::-webkit-scrollbar) {
+  .overflow-y-auto,
+  .overflow-auto {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+  }
+  .overflow-y-auto:hover,
+  .overflow-auto:hover {
+    scrollbar-color: var(--scrollbar-thumb) transparent;
+  }
+}
+.overflow-y-auto::-webkit-scrollbar,
+.overflow-auto::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.overflow-y-auto::-webkit-scrollbar-track,
+.overflow-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+.overflow-y-auto::-webkit-scrollbar-thumb,
+.overflow-auto::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 9999px;
+  transition: background-color 150ms;
+}
+.overflow-y-auto:hover::-webkit-scrollbar-thumb,
+.overflow-auto:hover::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+}
+.overflow-y-auto::-webkit-scrollbar-thumb:hover,
+.overflow-auto::-webkit-scrollbar-thumb:hover {
+  background-color: #4a4a4a;
+}
+.overflow-y-auto::-webkit-scrollbar-corner,
+.overflow-auto::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Leaflet 在深色介面上的小修正 */
+.leaflet-container {
+  background: #1a1a1a;
+  font: inherit;
+}
+
+/* 聊天縮到左欄、工作區滑出的轉場 */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 400ms;
+}
+::view-transition-group(composer),
+::view-transition-group(chat-pane),
+::view-transition-group(workspace) {
+  animation-duration: 620ms;
+  animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+}
+::view-transition-old(chat-pane),
+::view-transition-new(chat-pane),
+::view-transition-old(composer),
+::view-transition-new(composer) {
+  animation-duration: 620ms;
+  animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+}
+::view-transition-new(workspace) {
+  animation: 620ms cubic-bezier(0.32, 0.72, 0, 1) both workspace-in;
+}
+::view-transition-old(workspace) {
+  animation: 200ms ease-out both fade-out;
+}
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes workspace-in {
+  from {
+    opacity: 0;
+    transform: translateX(64px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

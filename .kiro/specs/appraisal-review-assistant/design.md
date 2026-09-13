@@ -1,56 +1,113 @@
-# Design Document: Appraisal Review Assistant
+# Design Document: 估價書表填寫助手
 
 ## 設計原則
 
-1. **數值由程式決定，文字由模型生成。** 等級、修正率、加總與價格一律由確定性規則計算；語言模型只把已算好的 Finding 轉成說明並引用出處。此原則直接對應命題的「降低人工判讀不一致」與評分中技術可行性佔 30% 的要求。
-2. **每個 Finding 都能追溯。** 原值、應為值、計算過程、依據來源缺一不可，否則不輸出。
-3. **缺漏不等於零。** 空白欄位與 `−`（免修正）與 `0.00` 是三種不同狀態，全程分開表示。
-4. **偏離規則不等於錯誤。** 命題明載「各案件之基準明細表內容可能因個案特性調整」，故規則引擎輸出待確認而非直接判錯。
-
-## 核心發現：修正率矩陣可由公式生成
-
-評價基準明細表中，每個修正細項都是一張「比準地等級 × 比較標的等級」的修正百分比矩陣。經核對官方範例表，該矩陣為等差且反對稱：
-
-```
-修正百分比 = (比較標的等級序 − 比準地等級序) × step
-step       = Max_Adjustment ÷ (等級數 − 1)
-等級序      = 優 0、稍優 1、普通 2、稍劣 3、劣 4
-```
-
-以官方範例表核對（`Max_Adjustment → step`）：
-
-| 細項 | Max | step | 驗證 |
-|---|---:|---:|---|
-| 都市計畫內外（2 級） | 20 | 20 | 優→劣 = 20、劣→優 = −20 |
-| 使用分區編定 | 20 | 5 | 優列 0, 5, 10, 15, 20 |
-| 建蔽率 | 10 | 2.5 | 優列 0, 2.5, 5, 7.5, 10 |
-| 容積率 | 40 | 10 | 優列 0, 10, 20, 30, 40 |
-| 主要道路寬度 | 15 | 3.75 | 優列 0, 3.75, 7.5, 11.25, 15 |
-| 站牌之接近及密集程度 | 8 | 2 | 優列 0, 2, 4, 6, 8 |
-| 接近市場之程度 | 6 | 1.5 | 優列 0, 1.5, 3, 4.5, 6 |
-| 接近觀光遊憩設施 | 3 | 0.75 | 優列 0, 0.75, 1.5, 2.25, 3 |
-| 停車場地之便利 | 4 | 1 | 優列 0, 1, 2, 3, 4 |
-
-**影響：** 規則庫不必人工抄寫約 25 張 5×5 矩陣（約 600 個數值），只需抄寫每個細項的 `Max_Adjustment` 與 5 段級距定義（約 25 列），其餘由公式生成。
-
-**風險與對策：** 公式是預設生成器，不是規範本身。建置規則庫時必須執行逐格回歸比對（見 Requirement 2.6）；任何不符的儲存格一律以官方基準表數值寫入 `overrides`，並在報告中列出，避免把個案調整誤當成公式適用。
+1. **數值由程式決定，文字由模型生成。** 等級、修正率、加總、價格一律由確定性規則計算；語言模型只把算好的結果轉成說明並引用出處，另可輔助解析區段範圍文字（結果須人工確認）。
+2. **每一格都能追溯。** 建議值、Evidence、Grade_Definition、矩陣查值、Rule_Citation 缺一不可，否則標為待確認而非輸出。
+3. **缺漏不等於零。** 空白、`EXEMPT`、`0.00` 是三種狀態，全程分開；任何 `MISSING` 都會阻擋依賴它的計算並在輸出留白。
+4. **表上的值不一定是評比值。** 記載值永遠保留，評比值透過 Legal_Override 改寫並註明依據；兩者並列顯示。
 
 ## 系統分層
 
 ```
-輸入層      Case_Bundle（表1／表5／表4 結構化欄位）
-              │  ← 文件擷取為可插拔前置步驟（P1）
-規則庫      Criteria_Table（上限值＋級距定義＋overrides）
-            Manual_Corpus（手冊切塊＋頁碼）
-              │
-審查引擎    純函式，輸入 Case_Bundle + Criteria_Table，輸出 List[Finding]
-              │
-說明層      Bedrock：Finding → 自然語言說明＋引用（不產生數值）
-              │
-呈現層      三表對照、Finding 標紅、確認流程、匯出勘查表
+資料蒐集層   Segment 範圍 → 設施距離 → Evidence
+               │
+案件層       Case（表3 已填值、表4 已給值、MISSING 欄位）＋ Legal_Override
+               │
+規則庫       Regional_Criteria（p.1–5，對象 Segment）＋ Individual_Criteria（p.6–9，對象 Parcel）＋ overrides
+               │
+計算引擎     判級 → 矩陣 → 小計／總修正 → 表4 串接 → Trial_Price → Price_Reconciliation
+             純函式，無 I/O；輸入 Case + Criteria + Evidence + Override，輸出 List[Fill_Suggestion]
+               │
+自我驗證     以最終值重跑計算引擎，比對已填值
+               │
+說明層       Bedrock：Fill_Suggestion → 說明＋引用（不產生數值，後驗證攔截）
+               │
+輸出層       逐格建議＋證據、地圖與距離、缺漏清單、覆寫清單、匯出官方 Excel 三個工作表
 ```
 
-審查引擎不依賴網路、模型或介面，因此可完整單元測試；這是把正確性風險與展示風險隔開的關鍵邊界。
+計算引擎不依賴網路、模型或介面，可完整單元測試；這是把正確性風險與展示風險隔開的邊界。
+
+## 為什麼要兩層、為什麼一起用
+
+| | 區域因素 | 個別因素 |
+|---|---|---|
+| 基準頁 | p.1–5 | p.6–9 |
+| 判定對象 | Segment | Parcel |
+| 輸出到 | 表5 → 表4「區域因素調整百分率」 | 表4 項目 7–25 |
+| 內容 | 8 大類 29 細項：土地使用管制、交通運輸、自然條件、土地改良、公共建設、特殊設施、環境污染、其他影響因素 | 19 細項：面積、寬度、深度、形狀、臨街、地勢、道路種類、面前道路寬度、接近學校／市場／公園／車站／商圈、嫌惡設施、停車、使用分區、建蔽率、容積率、禁限建 |
+
+兩層是相加的兩段修正，不是二選一：
+
+```
+Trial_Price = 正常單價 × (1 + 價格日期調整) ⊕ Total_Regional_Adjustment ⊕ Individual_Sum
+```
+
+`⊕` 為相乘或相加，設定項，輸出揭露。表4 項目 1–5 由查估單位填寫，本系統不產生。
+
+**同名細項不是重複修正。** 區域因素問「P002 這個區段離學校多遠 vs P001 這個區段」，個別因素問「樹德段 284 這一筆地離學校多遠 vs 樹德段 1415」。量的對象不同，各判一次各自正確。
+
+**例外只有使用分區、建蔽率、容積率。** 這三項在區段與宗地上是同一個數字，兩邊都填就是同一差異算兩次。題目 p.5 備註明定併入表4，表5 對應三列輸出 `−`。
+
+**容積率是接續，不是重複。** 基準 p.8 備註 2：先在表4 以土地開發分析法試算；若調整不足，剩餘差異補到表5。系統顯示「表4 調了多少 → 為何不足 → 表5 補多少 → 合計」。本案四筆容積率同為 200%，無差異，不需試算也不需補充。
+
+**區段主要道路 ≠ 宗地面前道路。** P001 主要道路八德街 28M（區段層級 → 「優」），但該宗地臨的是 8M 以下巷道（宗地層級 → 面前道路寬度「稍劣／劣」、容積率降為 200%）。兩者不衝突，欄位對應表必須把它們當成兩個欄位。
+
+## 修正率矩陣由公式生成
+
+每個細項的矩陣為等差且反對稱：
+
+```
+修正百分比 = (比較標的等級序 − 比準地等級序) × step
+step       = Max_Adjustment ÷ (等級數 − 1)
+等級序      = 5 級：優 0 … 劣 4；7 級：極優 0 … 極劣 6；2 級：優 0、劣 1；3 級：優 0、普通 1、劣 2
+```
+
+以決賽基準表核對：容積率 25 ÷ 4 = 6.25 ✓、其他影響因素 20 ÷ 6 = 3.33 ✓、有無限制建築 50 ÷ 2 = 25 ✓、面前道路寬度 12 ÷ 4 = 3 ✓。規則庫只抄每個細項的 Max_Adjustment 與級距定義，矩陣由公式生成；建置時逐格回歸，差異寫入 `overrides`。
+
+反向級距（嫌惡設施、環境污染：越遠越優）由 Grade_Definition 的級距順序表達，矩陣不變。
+
+### 已核對的 Max_Adjustment
+
+| 層 | 細項 | Max | 級數 | step | 備註 |
+|---|---|---:|---:|---:|---|
+| 區域 | 都市計畫內外 | 20 | 2 | 20 | |
+| 區域 | 使用分區 | 20 | 5 | 5 | 住宅區 = 稍優 |
+| 區域 | 建蔽率 | 10 | 5 | 2.5 | 50–60% = 稍劣 |
+| 區域 | 容積率 | 25 | 5 | 6.25 | 180–260% = 稍劣 |
+| 區域 | 有無禁止建築 | 50 | 2 | 50 | |
+| 區域 | 有無限制建築 | 50 | 3 | 25 | |
+| 區域 | 其他影響因素 | 20 | 7 | 3.33 | 唯一七級 |
+| 個別 | 面積 | 10 | 5 | 2.5 | |
+| 個別 | 寬度 | 5 | 5 | 1.25 | |
+| 個別 | 深度 | 5 | 5 | 1.25 | 優 14–30m，非單調 |
+| 個別 | 形狀 | 5 | 2 | 5 | |
+| 個別 | 臨路情形 | 10 | 5 | 2.5 | |
+| 個別 | 地勢 | 10 | 2 | 10 | |
+| 個別 | 道路種類 | 5 | 5 | 1.25 | |
+| 個別 | 面前道路寬度 | 12 | 5 | 3 | |
+| 個別 | 嫌惡設施 | 8 | 5 | 2 | 反向 |
+| 個別 | 停車方便性 | 5 | 3 | 2.5 | |
+| 個別 | 使用分區 | 15 | 5 | 3.75 | |
+| 個別 | 建蔽率 | 10 | 5 | 2.5 | |
+| 個別 | 容積率 | — | — | — | 土地開發分析法，不查表 |
+| 個別 | 有無禁限建 | 50 | 5 | 12.5 | |
+| 個別 | 無尾巷 | 5 | 2 | 5 | |
+
+區域因素 p.2–5 的交通、自然條件、土地改良、公共建設、特殊設施、環境污染各細項，與個別因素 p.7–8 的接近學校／市場／公園／車站／商圈，PDF 文字擷取順序打亂，須對照原頁逐格抄錄（任務 2.3）。
+
+## 本案特例：土地使用管制全為 0%
+
+| 區段 | 使用分區 | 建蔽率 | 容積率（表3） | 容積率（評比） | 禁建／限建 |
+|---|---|---:|---:|---:|---|
+| P001-00 比準地 | 第一種住宅區 | 50% | 260% | **200%** | 無／無 |
+| P002-00 | 第一種住宅區 | 50% | 200% | **200%** | 無／無 |
+| P003-00 | 第一種住宅區 | 50% | 260% | **200%** | 無／無 |
+| P004-00 | 第一種住宅區 | 50% | 260% | **200%** | 無／無 |
+
+四筆同級 → 使用分區、建蔽率、容積率、禁限建修正率均 0%。若照表3 原始值算，P001 260%（普通）vs P002 200%（稍劣）會多出一級 6.25% 的錯誤修正。
+
+**價差全部來自交通運輸、公共建設、特殊設施、環境污染、其他影響因素**，資料蒐集的重心放在這五類。
 
 ## 資料模型
 
@@ -58,123 +115,183 @@ step       = Max_Adjustment ÷ (等級數 − 1)
 
 ```json
 {
-  "id": "public_facility.market_proximity",
+  "id": "regional.public_facility.school",
+  "layer": "regional",
   "group": "公共建設",
-  "group_index": 4,
-  "name": "接近市場之程度",
+  "group_index": 5,
+  "name": "接近學校之程度",
   "max_adjustment": 6,
-  "measure": "至傳統市場、超級市場或超大型購物中心之距離",
+  "grade_count": 5,
+  "measure": "自區段邊界至最近國小／國中／高中／大專之直線距離",
   "grades": [
-    { "grade": "優",   "rule": { "type": "in_district" } },
-    { "grade": "稍優", "rule": { "type": "range", "unit": "m", "lt": 500 } },
-    { "grade": "普通", "rule": { "type": "range", "unit": "m", "gte": 500,  "lt": 1000 } },
-    { "grade": "稍劣", "rule": { "type": "range", "unit": "m", "gte": 1000, "lt": 1800 } },
-    { "grade": "劣",   "rule": { "type": "range", "unit": "m", "gte": 1800, "or_absent": true } }
+    { "grade": "優",   "rule": { "type": "in_segment_or_range", "unit": "m", "lt": 500 } },
+    { "grade": "稍優", "rule": { "type": "range", "unit": "m", "gte": 500,  "lt": 1000 } },
+    { "grade": "普通", "rule": { "type": "range", "unit": "m", "gte": 1000, "lt": 1500 } },
+    { "grade": "稍劣", "rule": { "type": "range", "unit": "m", "gte": 1500, "lt": 2000 } },
+    { "grade": "劣",   "rule": { "type": "range", "unit": "m", "gte": 2000, "or_absent": true } }
   ],
   "overrides": {},
-  "source": { "doc": "評價基準明細表範例.pdf", "page": 3 }
+  "source": { "doc": "評價基準明細表.pdf", "page": 4 }
 }
 ```
 
-`rule.type` 支援 `range`（數值級距）、`in_district`（區段內有）、`category`（類別對應，如使用分區）、`boolean`（有無）。
+`rule.type`：`range`、`in_segment_or_range`、`category`、`boolean`、`land_development_analysis`（容積率專用，不生成矩陣）。此範例的 Max 與級距為示意，正式值依任務 2.3 抄錄。
 
-### Finding
+### Evidence
 
 ```json
 {
-  "id": "F-012",
-  "kind": "grade_mismatch",
-  "severity": "error",
-  "location": { "form": "表5-2", "item_id": "public_facility.market_proximity", "column": "比較標的1" },
-  "recorded": "普通",
-  "expected": "稍優",
-  "computation": "表1 記載接近市場距離 350m；基準：未滿 500m 為稍優",
-  "citations": [
-    { "doc": "評價基準明細表範例.pdf", "page": 3, "item": "接近市場之程度" }
-  ],
-  "explanation": null,
-  "acknowledged": null
+  "field": "regional.public_facility.school",
+  "segment": "P002-00",
+  "value": 350,
+  "unit": "m",
+  "in_segment": false,
+  "facility": { "name": "○○國小", "type": "elementary" },
+  "measure": "自區段邊界至設施最近點直線距離",
+  "source": { "dataset": "新北市學校位置開放資料", "retrieved": "2026-09-12" },
+  "valuation_date": "2022-09-01",
+  "temporal_status": "current_data_needs_confirmation"
 }
 ```
 
-`kind`：`grade_mismatch`、`adjustment_mismatch`、`subtotal_mismatch`、`total_mismatch`、`cross_form_mismatch`、`sum_method_confusion`、`price_mismatch`、`duplicate_adjustment`、`missing_value`、`exempt_vs_zero`。
+`temporal_status`：`verified_at_valuation_date`、`current_data_needs_confirmation`、`unavailable`。量測基準在案件層級設定一次，所有 Evidence 共用。
 
-`severity`：`error`（確定錯誤）、`review`（待確認）、`info`（提醒）。
+### Legal_Override
 
-## 審查引擎：檢查層
-
-每一層是獨立純函式，各自可測，依序執行但互不依賴彼此的輸出。
-
-| 層 | 檢查 | 產生的 Finding |
-|---|---|---|
-| L1 | 依 Grade_Definition 由原始條件判定應得等級，比對表5 記載 | `grade_mismatch`、`missing_value` |
-| L2 | 依 Adjustment_Matrix 取應得修正率，比對表5 記載 | `adjustment_mismatch` |
-| L3 | 重算各主要項目 Group_Subtotal | `subtotal_mismatch` |
-| L4 | 重算 Total_Regional_Adjustment = Σ Group_Subtotal | `total_mismatch` |
-| L5 | 表1 原始條件 ↔ 表5 等級基礎；表5 總修正數 ↔ 表4 區域因素調整百分率；表1／表4 共同欄位 | `cross_form_mismatch` |
-| L6 | 表4 Signed_Sum 與 Absolute_Sum 分別重算並檢查是否互相對調 | `sum_method_confusion` |
-| L7 | 價格驗算 | `price_mismatch` |
-| L8 | 免修正符號與 0.00 混用、同因素重複修正 | `exempt_vs_zero`、`duplicate_adjustment` |
-
-### L7 價格驗算式
-
-以官方範例案件（案號 1140901-99-001）為回歸基準：
-
-```
-調整至估價基準日單價 = 土地正常單價 × (1 + 交易日期調整百分率)
-                    = 184,763 × (1 + 0.02) = 188,458.26 → 188,459
-
-試算價格 = 調整至估價基準日單價 × (1 + 個別因素合計)
-        = 188,459 × (1 + 0.13) = 212,958.67 → 212,958
+```json
+{
+  "field": "容積率",
+  "scope": "parcel",
+  "segment": "P001-00",
+  "recorded": "260%",
+  "effective": "200%",
+  "basis": "宗地臨路為 8 公尺以下巷道，依都市計畫法規容積率降為 200%",
+  "source": { "law": null, "status": "pending", "stated_by": "主辦方說明會 2026-09-12" },
+  "active": true
+}
 ```
 
-兩式與範本記載值一致，故此案件可直接作為引擎的驗收測試。進位方式（無條件捨去至整數）須寫入設定並在 Finding 中揭露；容差預設 1 元。
+`status` 為 `pending` 時，受影響的 Fill_Suggestion 連帶 `needs_confirmation`。
 
-### L6 加總方式混用
+### Fill_Suggestion
 
-表4 同時要求「合計」（Signed_Sum）與「調整百分率絕對值加總」（Absolute_Sum）。範例中兩者為 13.00% 與 15.00%。引擎重算兩值後：
+```json
+{
+  "id": "S-041",
+  "location": { "form": "表5-1", "item_id": "regional.public_facility.school", "column": "P002-00" },
+  "suggested": "+1.5",
+  "grade": { "base": "稍優", "target": "優" },
+  "evidence": ["E-017", "E-018"],
+  "overrides": [],
+  "computation": "P001 區段距最近國小 620m → 稍優；P002 區段內有國小 → 優；矩陣(稍優, 優) = +1.5",
+  "citations": [{ "doc": "評價基準明細表.pdf", "page": 4, "item": "接近學校之程度" }],
+  "confidence": "needs_confirmation",
+  "confidence_reason": "E-017 為 2026 現況資料，時點待確認",
+  "explanation": null,
+  "final": null
+}
+```
 
-- 記載的合計 == 重算的 Absolute_Sum，且記載的絕對值加總 == 重算的 Signed_Sum → 判定對調。
-- 兩欄位記載相同數值但重算結果不同 → 判定混用。
+`confidence`：`determined`（Evidence 齊備且時點已確認）、`needs_confirmation`（Evidence 時點待確認、Override 待確認、邊界待確認）、`manual`（其他影響因素、土地開發分析法）。`final` 由使用者確認後寫入，含值、修改者、時間。
 
-此為手冊明列的審查重點，也是最容易被人工忽略的錯誤類型。
+## 計算引擎
+
+每一步是獨立純函式，依序執行：
+
+| 步 | 函式 | 輸入 | 輸出 |
+|---|---|---|---|
+| 1 | `grade()` | Criteria_Item、原始條件（含 Evidence、Override） | Grade、`MISSING`、或 `manual` |
+| 2 | `adjust()` | Criteria_Item、Base Grade、Target Grade | 修正百分比＋計算過程 |
+| 3 | `subtotal()` / `total_regional()` | 表5 各細項修正 | 八個小計、Total_Regional_Adjustment |
+| 4 | `individual_sum()` | 表4 項目 7–25 | Individual_Sum |
+| 5 | `trial_price()` | 正常單價、價格日期調整、區域、個別、疊加方式、捨入 | Trial_Price＋計算式 |
+| 6 | `reconcile()` | 三個 Trial_Price、策略、閾值 | 比準地地價＋權重＋計算式 |
+
+規則：
+
+- 步 1 對區域層只讀 Segment 條件、對個別層只讀 Parcel 條件；同名細項不共用輸入。
+- 任一 Segment／Parcel 的條件為 `MISSING` → 該細項整列 `MISSING`，不部分計算。
+- 表5 使用分區、建蔽率、容積率三列固定 `EXEMPT`；若接續記錄存在，容積率列改為補充量並附記錄。
+- 步 3、4 略過 `EXEMPT` 與 `MISSING`；任一 `MISSING` 使該小計標 `MISSING`。
+- 步 5 任一輸入 `MISSING` → Trial_Price `MISSING`；步 6 任一 Trial_Price `MISSING` → 不輸出比準地地價，列出阻擋欄位。
+- 其他影響因素預設四 Segment 同為普通；級差需附 Evidence 與理由，否則 `grade()` 回 `manual`。
+
+### 其他影響因素：先排序再定級
+
+唯一七級項目（±20，step 3.33），內容為寧適度、人文素質、明星學區、淹水、地震帶、重大工程規劃、聯外動線，無客觀級距。介面流程：
+
+1. 預設四個 Segment 同為「普通」。
+2. 使用者可依單一子因素將 Segment 拖曳排序，以 Base_Segment 為錨點指派絕對 Grade。
+3. 任何級差必須附 Evidence 與理由（例：比準地區段描述提到捷運開發區 → 重大工程規劃）。
+4. 寫入的是每個 Segment 的絕對 Grade；矩陣以〔Base Grade × Target Grade〕查值。
+
+### Price_Reconciliation
+
+| 策略 | 說明 |
+|---|---|
+| `mean` | 三個 Trial_Price 算術平均 |
+| `weighted_by_adjustment` | 權重 ∝ 1 ÷ (1 + \|區域總修正\| + \|個別合計\|)，預設 |
+| `drop_outlier` | 剔除總修正率絕對值超過閾值（預設 30%）者後取平均 |
+
+策略、權重、閾值、捨入方式寫入設定並於輸出揭露；法源確認前輸出標示待確認。
+
+## 資料蒐集層
+
+| 要查的 | 候選來源 |
+|---|---|
+| 國小／國中／高中／大專 | 新北市開放資料、教育部校園位置 |
+| 傳統市場／超市／購物中心 | 新北市市場處、OSM |
+| 公園／廣場／徒步區 | 新北市景觀處、OSM |
+| 火車站／捷運站／客運站／站牌 | TDX 運輸資料流通服務 |
+| 交流道 | 高公局、OSM |
+| 郵局／醫院／機關 | 政府資料開放平臺、OSM |
+| 變電所／高壓鐵塔／瓦斯槽 | 台電、OSM |
+| 墓地／殯儀館／火葬場 | 新北市殯葬處 |
+| 垃圾場／焚化爐／污水處理場 | 新北市環保局 |
+| 區段範圍圖形 | 國土測繪中心地籍圖、地價區段圖 |
+
+流程：區段範圍文字（如「沿樹人街以北、長壽街21巷以西、啟智街14巷以南及樹德街136巷以東」）→ 模型輔助解析候選邊界街道 → 人工確認 → 圖形 → 對每類設施算最近距離 → Evidence。無法確定邊界的區段，其所有距離連帶 `needs_confirmation`。
+
+時點：Valuation_Date 為 2022-09-01。2023 年後才開的設施不能算；只能取得現況資料時標 `current_data_needs_confirmation`，輸出留待人工確認。
 
 ## 說明層邊界
 
-輸入給模型的是已完成的 Finding 結構與檢索到的手冊段落；輸出僅限 `explanation` 字串。實作上以下列方式約束：
+輸入給模型的是已完成的 Fill_Suggestion 結構；輸出僅限 `explanation` 字串。約束：
 
 - 提示中明確列出「不得產生或修改任何數字」。
-- 輸出後以正則抽取 `explanation` 內的所有數值，逐一比對是否存在於該 Finding 的 `recorded`／`expected`／`computation`／引用段落中；出現未知數值即捨棄該說明並退回結構化輸出。
+- 輸出後以正則抽取 `explanation` 內所有數值，逐一比對是否存在於該 Fill_Suggestion 的 `suggested`／`grade`／`computation`／Evidence 值；出現未知數值即捨棄說明並退回結構化輸出。
 
-此後驗證是必要的，因為評分看的是審查結果可信度，寧可沒有說明也不能有幻覺數字。
+依競賽規範，基礎模型限 AWS 服務提供者，走 Amazon Bedrock。模型另可用於區段範圍文字解析（輸出候選街道清單，人工確認後才進入距離計算）。
 
-依競賽規範，基礎模型限使用 AWS 服務提供者，故說明層與檢索皆走 Amazon Bedrock。
+## 輸出層
 
-## 呈現層
-
-- 三表對照檢視，Finding 錨定到具體儲存格。
-- 每個 Finding 展開顯示：原值、應為值、計算過程、引用頁碼。
-- 逐項確認／否決，狀態寫回 Finding。
-- 匯出填答完成的勘查表（競賽對地政局組的額外交付要求），並附未解決 Finding 清單。
+- 每個 Segment 一張卡：地圖、範圍、設施與距離、各細項 Grade。
+- 三表逐格檢視：每格顯示建議值與信心狀態，點開見 Evidence、Override、Grade_Definition、矩陣查值、Rule_Citation。
+- 缺漏清單與覆寫清單常駐。
+- 確認／修改寫回 `final`，完成後觸發自我驗證。
+- 匯出：寫入官方 xlsx 的「表3區段勘查表」、「表5-1區域因素明細表(住)」、「表4比較法調查估價表」，其餘 23 個工作表不動；`MISSING` 留白並於備註標示；附設定與清單。
 
 ## 技術選型
 
 | 項目 | 選擇 | 理由 |
 |---|---|---|
-| 審查引擎 | Python，純函式、無 I/O | 可完整單元測試；與現有 `src/` 一致 |
-| 規則庫 | JSON + 產生器 | 人工核對面積小，公式覆蓋其餘 |
-| 手冊檢索 | Bedrock Knowledge Base 或本地向量索引 | 依現場環境擇一，介面固定 |
-| 說明生成 | Amazon Bedrock | 競賽限定 AWS 基礎模型 |
+| 計算引擎 | Python，純函式、無 I/O | 可完整單元測試；與現有 `src/` 一致 |
+| 規則庫 | JSON + 產生器 | 只抄 Max 與級距，矩陣由公式生成 |
+| 地理計算 | shapely／geopandas | 區段圖形與最近距離 |
+| Excel 匯出 | openpyxl | 只寫指定工作表 |
+| 說明生成、範圍解析 | Amazon Bedrock | 競賽限定 AWS 基礎模型 |
 | 介面 | Web 單頁 | Live Demo 需可部署且可錄影 |
 
 ## 測試策略
 
-1. **公式回歸**：以官方基準表全表逐格比對 Matrix_Formula 生成結果，差異必須為 0 或被明確記錄為 override。
-2. **黃金案例**：官方範例案件（P002-00）在無錯誤輸入下應產生 0 個 `error` 等級 Finding。
-3. **注入錯誤**：對黃金案例逐項注入已知錯誤（改等級、改修正率、改小計、對調兩種加總、改價格），驗證對應層產出且僅產出預期的 Finding。
-4. **邊界**：級距端點值、免修正符號、缺漏欄位、兩級距細項。
-5. **說明層**：驗證數值後驗證機制能攔下含未知數字的輸出。
+1. **公式回歸**：兩層所有矩陣逐格比對基準表，差異必須為 0 或被記錄為 override。
+2. **Legal_Override 前後**：以表3 原始值（P001 260%）跑一次應得 6.25%，以覆寫值跑一次應得 0%，且輸出採覆寫版本。
+3. **分層隔離**：同名細項在兩層各判一次不得觸發重複修正；使用分區／建蔽率／容積率在表5 非 `EXEMPT` 且無接續記錄時必須被拒絕。
+4. **缺漏傳播**：任一 Segment 條件 `MISSING` → 該細項整列 `MISSING` → 小計 `MISSING` → Trial_Price `MISSING` → 不輸出地價。
+5. **往返驗證**：Fill 產出的三表以最終值重跑計算引擎，須 0 個不一致。
+6. **邊界**：級距端點值（28m、200m、260%）、反向級距、二級與七級細項、非單調級距（深度）。
+7. **說明層**：數值後驗證能攔下含未知數字的輸出。
 
 ## 與既有程式碼的關係
 
-`src/import_drive_archive/` 是官方資料的匯入管線，其任務已完成（資料已備存於 `官方資料/`），與本功能無執行期相依。本功能新增獨立套件，不修改該套件。
+`src/import_drive_archive/` 為官方資料匯入管線，任務已完成，與本功能無執行期相依。本功能新增 `src/appraisal_filler/`，不修改該套件。

@@ -1,0 +1,354 @@
+{
+  "version": 0.6,
+  "generator": "Overpass API 0.7.62.11 87bfad18",
+  "osm3s": {
+    "timestamp_osm_base": "2026-09-12T06:12:19Z",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+  },
+  "elements": [
+
+{
+  "type": "node",
+  "id": 48073921,
+  "lat": 24.9590608,
+  "lon": 121.4256367,
+  "tags": {
+    "destination": "土城;板橋",
+    "exit_to": "土城、板橋",
+    "highway": "motorway_junction",
+    "name": "土城交流道",
+    "name:en": "Tucheng Interchange",
+    "name:nan": "Thô͘-siâⁿ Kau-liû-tō",
+    "name:nan-Hant": "土城交流道",
+    "name:nan-Latn-pehoeji": "Thô͘-siâⁿ Kau-liû-tō",
+    "name:nan-Latn-tailo": "Thôo-siânn Kau-liû-tō",
+    "name:zh": "土城交流道",
+    "ref": "42",
+    "wikidata": "Q10927700",
+    "wikipedia": "zh:土城交流道"
+  }
+},
+{
+  "type": "node",
+  "id": 48074155,
+  "lat": 24.9738506,
+  "lon": 121.4481133,
+  "tags": {
+    "highway": "motorway_junction"
+  }
+},
+{
+  "type": "node",
+  "id": 878267356,
+  "lat": 24.9636392,
+  "lon": 121.4389579,
+  "tags": {
+    "exit_to": "土城、板橋",
+    "highway": "motorway_junction",
+    "name": "土城交流道",
+    "name:en": "Tucheng Interchange",
+    "name:nan": "Thô͘-siâⁿ Kau-liû-tō",
+    "name:nan-Hant": "土城交流道",
+    "name:nan-Latn-pehoeji": "Thô͘-siâⁿ Kau-liû-tō",
+    "name:nan-Latn-tailo": "Thôo-siânn Kau-liû-tō",
+    "name:zh": "土城交流道",
+    "ref": "42",
+    "wikidata": "Q10927700",
+    "wikipedia": "zh:土城交流道"
+  }
+},
+{
+  "type": "node",
+  "id": 878364361,
+  "lat": 24.9752222,
+  "lon": 121.4575863,
+  "tags": {
+    "highway": "motorway_junction"
+  }
+},
+{
+  "type": "node",
+  "id": 878364455,
+  "lat": 25.0338488,
+  "lon": 121.4647507,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "江子翠交流道",
+    "name:en": "Jiangzicui IC",
+    "name:zh": "江子翠交流道",
+    "ref": "17"
+  }
+},
+{
+  "type": "node",
+  "id": 975891338,
+  "lat": 25.0117573,
+  "lon": 121.4772491,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "中和一交流道",
+    "name:en": "Zhonghe 1st IC",
+    "name:zh": "中和一交流道",
+    "ref": "23"
+  }
+},
+{
+  "type": "node",
+  "id": 975891501,
+  "lat": 25.0291220,
+  "lon": 121.4646387,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "板橋交流道",
+    "name:en": "Banqiao IC",
+    "name:zh": "板橋交流道",
+    "ref": "20"
+  }
+},
+{
+  "type": "node",
+  "id": 975891522,
+  "lat": 25.0414283,
+  "lon": 121.4798211,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "江子翠交流道",
+    "name:en": "Jiangzicui IC",
+    "name:zh": "江子翠交流道",
+    "ref": "17"
+  }
+},
+{
+  "type": "node",
+  "id": 1138442382,
+  "lat": 24.9410337,
+  "lon": 121.3622061,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "三鶯交流道",
+    "name:en": "Sanying Interchange",
+    "name:zh": "三鶯交流道",
+    "ref": "50A",
+    "wikidata": "Q10867146",
+    "wikipedia": "zh:三鶯交流道"
+  }
+},
+{
+  "type": "node",
+  "id": 1214773923,
+  "lat": 25.0499876,
+  "lon": 121.4423296,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "新莊一交流道",
+    "name:en": "Xinzhuang 1st IC",
+    "name:zh": "新莊一交流道",
+    "ref": "2"
+  }
+},
+{
+  "type": "node",
+  "id": 1269743494,
+  "lat": 25.0006359,
+  "lon": 121.4519974,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "板橋二交流道",
+    "name:en": "Banqiao 2nd IC",
+    "name:zh": "板橋二交流道",
+    "ref": "8"
+  }
+},
+{
+  "type": "node",
+  "id": 1396257060,
+  "lat": 25.0183482,
+  "lon": 121.4713603,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "板橋交流道",
+    "name:en": "Banqiao IC",
+    "name:zh": "板橋交流道",
+    "ref": "20B"
+  }
+},
+{
+  "type": "node",
+  "id": 1413143388,
+  "lat": 24.9884315,
+  "lon": 121.4799799,
+  "tags": {
+    "exit_to": "中和、板橋",
+    "highway": "motorway_junction",
+    "name": "中和交流道",
+    "name:en": "Zhonghe Interchange",
+    "name:nan": "Tiong-hô Kau-liû-tō",
+    "name:nan-Hant": "中和交流道",
+    "name:nan-Latn-pehoeji": "Tiong-hô Kau-liû-tō",
+    "name:nan-Latn-tailo": "Tiong-hô Kau-liû-tō",
+    "name:zh": "中和交流道",
+    "ref": "35",
+    "wikidata": "Q10872646",
+    "wikipedia": "zh:中和交流道 (國道3號、台64線)"
+  }
+},
+{
+  "type": "node",
+  "id": 1502780229,
+  "lat": 25.0430925,
+  "lon": 121.4792541,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "環漢路出口"
+  }
+},
+{
+  "type": "node",
+  "id": 1548374511,
+  "lat": 24.9649838,
+  "lon": 121.4325593,
+  "tags": {
+    "destination": "中和、三峽",
+    "highway": "motorway_junction",
+    "name": "土城交流道",
+    "name:en": "Tucheng Interchange",
+    "name:zh": "土城交流道",
+    "ref": "13"
+  }
+},
+{
+  "type": "node",
+  "id": 2153353880,
+  "lat": 25.0203247,
+  "lon": 121.4457581,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "板橋一交流道",
+    "name:en": "Banqiao 1st IC",
+    "name:zh": "板橋一交流道",
+    "ref": "6"
+  }
+},
+{
+  "type": "node",
+  "id": 2171470814,
+  "lat": 24.9807750,
+  "lon": 121.4384632,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "土城一交流道",
+    "name:en": "Tucheng 1st IC",
+    "name:zh": "土城一交流道",
+    "ref": "11"
+  }
+},
+{
+  "type": "node",
+  "id": 2171511969,
+  "lat": 24.9740969,
+  "lon": 121.4336166,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "土城一交流道",
+    "name:en": "Tucheng 1st IC",
+    "name:zh": "土城一交流道",
+    "ref": "11"
+  }
+},
+{
+  "type": "node",
+  "id": 2171637248,
+  "lat": 24.9674548,
+  "lon": 121.4328511,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "土城二交流道",
+    "name:en": "Tucheng 2nd IC",
+    "name:zh": "土城二交流道",
+    "ref": "12"
+  }
+},
+{
+  "type": "node",
+  "id": 2342160928,
+  "lat": 25.0392478,
+  "lon": 121.4420727,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "新莊二交流道",
+    "name:en": "Xinzhuang 2nd IC",
+    "name:zh": "新莊二交流道",
+    "ref": "4"
+  }
+},
+{
+  "type": "node",
+  "id": 3280020021,
+  "lat": 25.0266816,
+  "lon": 121.4424990,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "新莊二交流道",
+    "name:en": "Xinzhuang 2nd IC",
+    "name:zh": "新莊二交流道",
+    "ref": "4"
+  }
+},
+{
+  "type": "node",
+  "id": 4412964068,
+  "lat": 24.9979947,
+  "lon": 121.4500367,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "板橋二交流道",
+    "name:en": "Banqiao 2nd IC",
+    "name:zh": "板橋二交流道",
+    "ref": "8"
+  }
+},
+{
+  "type": "node",
+  "id": 6499473610,
+  "lat": 24.9506916,
+  "lon": 121.4032579,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "樹林交流道",
+    "name:en": "Shulin Interchange",
+    "name:nan": "Chhiū-nâ-á Kau-liû-tō",
+    "name:nan-Hant": "樹林仔交流道",
+    "name:nan-Latn-pehoeji": "Chhiū-nâ-á Kau-liû-tō",
+    "name:nan-Latn-tailo": "Tshiū-nâ-á Kau-liû-tō",
+    "name:zh": "樹林交流道",
+    "ref": "46",
+    "wikidata": "Q22098534",
+    "wikipedia": "zh:樹林交流道"
+  }
+},
+{
+  "type": "node",
+  "id": 7770561033,
+  "lat": 25.0479348,
+  "lon": 121.4354568,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "泰山端",
+    "name:en": "Taishan End",
+    "name:zh": "泰山端"
+  }
+},
+{
+  "type": "node",
+  "id": 12064679277,
+  "lat": 25.0259656,
+  "lon": 121.4665514,
+  "tags": {
+    "highway": "motorway_junction",
+    "name": "板橋交流道",
+    "ref": "20A"
+  }
+}
+
+  ]
+}

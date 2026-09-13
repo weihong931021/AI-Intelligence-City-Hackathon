@@ -1,0 +1,928 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "MultiPolygon",
+    "coordinates": [
+     [
+      [
+       [
+        121.41521548577,
+        24.987262007583
+       ],
+       [
+        121.41521217726,
+        24.987253875861
+       ],
+       [
+        121.41530127744,
+        24.987296491847
+       ],
+       [
+        121.41535751236,
+        24.987323249889
+       ],
+       [
+        121.41536919885,
+        24.987329198379
+       ],
+       [
+        121.41529514832,
+        24.987316944403
+       ],
+       [
+        121.41521970461,
+        24.987269804481
+       ],
+       [
+        121.41521548577,
+        24.987262007583
+       ]
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "區段": "P001-00 比準地",
+    "地段": "樹德段",
+    "地號": 1415,
+    "面積_m2": 25.44,
+    "外接矩形_短邊_m": 2.3,
+    "外接矩形_長邊_m": 17.91,
+    "矩形度": 0.617,
+    "形狀判讀": "長條形",
+    "臨路邊數": 7,
+    "臨路道路數": 2,
+    "臨街判讀(候選,8m門檻)": "兩條路名（路角地或雙面，待看圖）",
+    "臨路道路(8m門檻)": "啟智街187巷 12.1m；啟智街 24.6m",
+    "臨路道路數@6m/8m/10m": "2/2/2",
+    "臨路總長_m": 36.66,
+    "25m內道路(名稱/類別/距中心線m)": "啟智街187巷/巷道/0.15；啟智街187巷/巷道/0.25；啟智街187巷/巷道/1.81；啟智街/巷道/2.41；啟智街/巷道/3.0；啟智街/巷道/4.68；啟智街/巷道/5.05",
+    "中心點_lon": 121.415283,
+    "中心點_lat": 24.987296,
+    "頂點數": 7,
+    "來源": "twland.ronny.tw（easymap 2015 地籍）＋ OSM Overpass 2026-09-12",
+    "edges": [
+     {
+      "edge": 0,
+      "length_m": 0.96,
+      "nearest_road": "啟智街187巷",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 0.15,
+      "fronting": true
+     },
+     {
+      "edge": 1,
+      "length_m": 10.16,
+      "nearest_road": "啟智街187巷",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 1.81,
+      "fronting": true
+     },
+     {
+      "edge": 2,
+      "length_m": 6.4,
+      "nearest_road": "啟智街",
+      "highway": "residential",
+      "width_tag": "",
+      "dist_m": 4.68,
+      "fronting": true
+     },
+     {
+      "edge": 3,
+      "length_m": 1.35,
+      "nearest_road": "啟智街",
+      "highway": "residential",
+      "width_tag": "",
+      "dist_m": 5.05,
+      "fronting": true
+     },
+     {
+      "edge": 4,
+      "length_m": 7.6,
+      "nearest_road": "啟智街",
+      "highway": "residential",
+      "width_tag": "",
+      "dist_m": 3.0,
+      "fronting": true
+     },
+     {
+      "edge": 5,
+      "length_m": 9.23,
+      "nearest_road": "啟智街",
+      "highway": "residential",
+      "width_tag": "",
+      "dist_m": 2.41,
+      "fronting": true
+     },
+     {
+      "edge": 6,
+      "length_m": 0.96,
+      "nearest_road": "啟智街187巷",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 0.25,
+      "fronting": true
+     }
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "MultiPolygon",
+    "coordinates": [
+     [
+      [
+       [
+        121.42101655366,
+        24.993763283366
+       ],
+       [
+        121.4211055507,
+        24.993720166963
+       ],
+       [
+        121.42113412542,
+        24.99376012623
+       ],
+       [
+        121.42113614654,
+        24.993764772476
+       ],
+       [
+        121.42113780419,
+        24.993769752034
+       ],
+       [
+        121.42113873266,
+        24.993774733656
+       ],
+       [
+        121.42113893194,
+        24.993779717342
+       ],
+       [
+        121.42113876663,
+        24.993784702059
+       ],
+       [
+        121.42113787213,
+        24.993789688842
+       ],
+       [
+        121.42113624845,
+        24.993794677687
+       ],
+       [
+        121.42113425903,
+        24.993799335285
+       ],
+       [
+        121.4211315393,
+        24.993803662666
+       ],
+       [
+        121.42112827211,
+        24.993807825455
+       ],
+       [
+        121.4211246392,
+        24.993811656995
+       ],
+       [
+        121.4211204577,
+        24.993814991664
+       ],
+       [
+        121.42104059751,
+        24.993864561747
+       ],
+       [
+        121.42101655366,
+        24.993763283366
+       ]
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "區段": "P002-00 比較1",
+    "地段": "樹德段",
+    "地號": 284,
+    "面積_m2": 119.09,
+    "外接矩形_短邊_m": 11.05,
+    "外接矩形_長邊_m": 13.77,
+    "矩形度": 0.783,
+    "形狀判讀": "不規則形（矩形度<0.85）",
+    "臨路邊數": 16,
+    "臨路道路數": 2,
+    "臨街判讀(候選,8m門檻)": "兩條路名（路角地或雙面，待看圖）",
+    "臨路道路(8m門檻)": "啟智街 32.0m；長壽街21巷 11.4m",
+    "臨路道路數@6m/8m/10m": "2/2/2",
+    "臨路總長_m": 43.41,
+    "25m內道路(名稱/類別/距中心線m)": "啟智街/巷道/0.35；啟智街/巷道/0.76；長壽街21巷/巷道/2.0；長壽街21巷/巷道/2.06；長壽街21巷/巷道/2.19；長壽街21巷/巷道/2.37；長壽街21巷/巷道/2.61；長壽街21巷/巷道/2.91；長壽街21巷/巷道/3.25；啟智街/巷道/3.52；長壽街21巷/巷道/3.64；長壽街21巷/巷道/4.09；長壽街21巷/巷道/4.55；長壽街21巷/巷道/5.05；啟智街/巷道/5.15；長壽街21巷/巷道/5.59",
+    "中心點_lon": 121.421077,
+    "中心點_lat": 24.993788,
+    "頂點數": 16,
+    "來源": "twland.ronny.tw（easymap 2015 地籍）＋ OSM Overpass 2026-09-12",
+    "edges": [
+     {
+      "edge": 0,
+      "length_m": 10.18,
+      "nearest_road": "啟智街",
+      "highway": "residential",
+      "width_tag": "",
+      "dist_m": 0.76,
+      "fronting": true
+     },
+     {
+      "edge": 1,
+      "length_m": 5.28,
+      "nearest_road": "長壽街21巷",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 2.0,
+      "fronting": true
+     },
+     {
+      "edge": 2,
+      "length_m": 0.55,
+      "nearest_road": "長壽街21巷",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 2.06,
+      "fronting": true
+     },
+     {
+      "edge": 3,
+      "length_m": 0.58,
+      "nearest_road": "長壽街21巷",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 2.19,
+      "fronting": true
+     },
+     {
+      "edge": 4,
+      "length_m": 0.56,
+      "nearest_road": "長壽街21巷",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 2.37,
+      "fronting": true
+     },
+     {
+      "edge": 5,
+      "length_m": 0.55,
+      "nearest_road": "長壽街21巷",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 2.61,
+      "fronting": true
+     },
+     {
+      "edge": 6,
+      "length_m": 0.55,
+      "nearest_road": "長壽街21巷",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 2.91,
+      "fronting": true
+     },
+     {
+      "edge": 7,
+      "length_m": 0.56,
+      "nearest_road": "長壽街21巷",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 3.25,
+      "fronting": true
+     },
+     {
+      "edge": 8,
+      "length_m": 0.58,
+      "nearest_road": "長壽街21巷",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 3.64,
+      "fronting": true
+     },
+     {
+      "edge": 9,
+      "length_m": 0.55,
+      "nearest_road": "長壽街21巷",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 4.09,
+      "fronting": true
+     },
+     {
+      "edge": 10,
+      "length_m": 0.55,
+      "nearest_road": "長壽街21巷",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 4.55,
+      "fronting": true
+     },
+     {
+      "edge": 11,
+      "length_m": 0.57,
+      "nearest_road": "長壽街21巷",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 5.05,
+      "fronting": true
+     },
+     {
+      "edge": 12,
+      "length_m": 0.56,
+      "nearest_road": "長壽街21巷",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 5.59,
+      "fronting": true
+     },
+     {
+      "edge": 13,
+      "length_m": 0.56,
+      "nearest_road": "啟智街",
+      "highway": "residential",
+      "width_tag": "",
+      "dist_m": 5.15,
+      "fronting": true
+     },
+     {
+      "edge": 14,
+      "length_m": 9.75,
+      "nearest_road": "啟智街",
+      "highway": "residential",
+      "width_tag": "",
+      "dist_m": 0.35,
+      "fronting": true
+     },
+     {
+      "edge": 15,
+      "length_m": 11.48,
+      "nearest_road": "啟智街",
+      "highway": "residential",
+      "width_tag": "",
+      "dist_m": 3.52,
+      "fronting": true
+     }
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "MultiPolygon",
+    "coordinates": [
+     [
+      [
+       [
+        121.41611643016,
+        24.982809699828
+       ],
+       [
+        121.41617793755,
+        24.982842150428
+       ],
+       [
+        121.41611017095,
+        24.982958080629
+       ],
+       [
+        121.41606444959,
+        24.982949271945
+       ],
+       [
+        121.4160370211,
+        24.982945270795
+       ],
+       [
+        121.41611643016,
+        24.982809699828
+       ]
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "區段": "P003-00 比較2",
+    "地段": "太平段",
+    "地號": 367,
+    "面積_m2": 112.99,
+    "外接矩形_短邊_m": 7.18,
+    "外接矩形_長邊_m": 17.02,
+    "矩形度": 0.924,
+    "形狀判讀": "方形／梯形（矩形度≥0.85）",
+    "臨路邊數": 2,
+    "臨路道路數": 1,
+    "臨街判讀(候選,8m門檻)": "單面臨街候選",
+    "臨路道路(8m門檻)": "鎮前街367巷4弄 7.5m",
+    "臨路道路數@6m/8m/10m": "0/1/1",
+    "臨路總長_m": 7.52,
+    "25m內道路(名稱/類別/距中心線m)": "鎮前街367巷4弄/巷道/6.95；鎮前街367巷4弄/巷道/7.64；鎮前街367巷4弄/巷道/10.92；鎮前街367巷4弄/巷道/11.66；東榮街88巷/巷道/19.46",
+    "中心點_lon": 121.41611,
+    "中心點_lat": 24.982888,
+    "頂點數": 5,
+    "來源": "twland.ronny.tw（easymap 2015 地籍）＋ OSM Overpass 2026-09-12",
+    "edges": [
+     {
+      "edge": 0,
+      "length_m": 7.18,
+      "nearest_road": "東榮街88巷",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 19.46,
+      "fronting": false
+     },
+     {
+      "edge": 1,
+      "length_m": 14.55,
+      "nearest_road": "鎮前街367巷4弄",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 10.92,
+      "fronting": false
+     },
+     {
+      "edge": 2,
+      "length_m": 4.72,
+      "nearest_road": "鎮前街367巷4弄",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 6.95,
+      "fronting": true
+     },
+     {
+      "edge": 3,
+      "length_m": 2.8,
+      "nearest_road": "鎮前街367巷4弄",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 7.64,
+      "fronting": true
+     },
+     {
+      "edge": 4,
+      "length_m": 17.02,
+      "nearest_road": "鎮前街367巷4弄",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 11.66,
+      "fronting": false
+     }
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "MultiPolygon",
+    "coordinates": [
+     [
+      [
+       [
+        121.41611017095,
+        24.982958080629
+       ],
+       [
+        121.41610373451,
+        24.982968943894
+       ],
+       [
+        121.41606444959,
+        24.982949271945
+       ],
+       [
+        121.41611017095,
+        24.982958080629
+       ]
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "區段": "P003-00 比較2",
+    "地段": "太平段",
+    "地號": 917,
+    "面積_m2": 3.09,
+    "外接矩形_短邊_m": 1.31,
+    "外接矩形_長邊_m": 4.72,
+    "矩形度": 0.5,
+    "形狀判讀": "畸零地（面積<10m²）",
+    "臨路邊數": 3,
+    "臨路道路數": 1,
+    "臨街判讀(候選,8m門檻)": "單面臨街候選",
+    "臨路道路(8m門檻)": "鎮前街367巷4弄 10.6m",
+    "臨路道路數@6m/8m/10m": "0/1/1",
+    "臨路總長_m": 10.62,
+    "25m內道路(名稱/類別/距中心線m)": "鎮前街367巷4弄/巷道/6.01；鎮前街367巷4弄/巷道/6.26；鎮前街367巷4弄/巷道/6.95",
+    "中心點_lon": 121.416093,
+    "中心點_lat": 24.982959,
+    "頂點數": 3,
+    "來源": "twland.ronny.tw（easymap 2015 地籍）＋ OSM Overpass 2026-09-12",
+    "edges": [
+     {
+      "edge": 0,
+      "length_m": 1.37,
+      "nearest_road": "鎮前街367巷4弄",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 6.26,
+      "fronting": true
+     },
+     {
+      "edge": 1,
+      "length_m": 4.53,
+      "nearest_road": "鎮前街367巷4弄",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 6.01,
+      "fronting": true
+     },
+     {
+      "edge": 2,
+      "length_m": 4.72,
+      "nearest_road": "鎮前街367巷4弄",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 6.95,
+      "fronting": true
+     }
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "MultiPolygon",
+    "coordinates": [
+     [
+      [
+       [
+        121.42376455671,
+        24.998579513004
+       ],
+       [
+        121.42376129309,
+        24.998575535234
+       ],
+       [
+        121.42375865368,
+        24.998571327852
+       ],
+       [
+        121.42375651347,
+        24.998566891216
+       ],
+       [
+        121.42375499709,
+        24.998562111055
+       ],
+       [
+        121.4237539807,
+        24.998557329469
+       ],
+       [
+        121.4237537139,
+        24.998552431831
+       ],
+       [
+        121.42375394749,
+        24.998547646685
+       ],
+       [
+        121.42375468068,
+        24.9985427462
+       ],
+       [
+        121.42375616463,
+        24.998538071409
+       ],
+       [
+        121.42375814897,
+        24.998533509108
+       ],
+       [
+        121.42376075947,
+        24.998529286772
+       ],
+       [
+        121.42376374575,
+        24.998525291199
+       ],
+       [
+        121.4237673578,
+        24.998521521676
+       ],
+       [
+        121.42377134679,
+        24.998518320659
+       ],
+       [
+        121.42417993444,
+        24.99821698702
+       ],
+       [
+        121.42422144827,
+        24.998257536735
+       ],
+       [
+        121.4242610899,
+        24.99829888919
+       ],
+       [
+        121.42425684898,
+        24.998301521357
+       ],
+       [
+        121.42426426452,
+        24.998313347495
+       ],
+       [
+        121.42411327668,
+        24.998425757641
+       ],
+       [
+        121.42407088533,
+        24.998457319358
+       ],
+       [
+        121.4239468279,
+        24.998549603315
+       ],
+       [
+        121.42391106592,
+        24.998509606717
+       ],
+       [
+        121.42378576225,
+        24.998603033254
+       ],
+       [
+        121.42376455671,
+        24.998579513004
+       ]
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "區段": "P004-00 比較3",
+    "地段": "文林段",
+    "地號": 317,
+    "面積_m2": 703.68,
+    "外接矩形_短邊_m": 13.84,
+    "外接矩形_長邊_m": 58.52,
+    "矩形度": 0.869,
+    "形狀判讀": "方形／梯形（矩形度≥0.85）",
+    "臨路邊數": 20,
+    "臨路道路數": 3,
+    "臨街判讀(候選,8m門檻)": "三條以上路名（待看圖）",
+    "臨路道路(8m門檻)": "潭興街107巷21弄 4.5m；潭興街 65.7m；潭興街91巷1弄 41.4m",
+    "臨路道路數@6m/8m/10m": "3/3/3",
+    "臨路總長_m": 111.54,
+    "25m內道路(名稱/類別/距中心線m)": "潭興街91巷1弄/巷道/0.05；潭興街/巷道/1.05；潭興街/巷道/1.56；潭興街/巷道/1.61；潭興街/巷道/1.73；潭興街/巷道/1.9；潭興街/巷道/2.12；潭興街/巷道/2.4；潭興街/巷道/2.42；潭興街/巷道/2.74；潭興街/巷道/3.12；潭興街/巷道/3.53；潭興街/巷道/3.98；潭興街/巷道/4.47；潭興街107巷21弄/巷道/4.91；潭興街107巷21弄/巷道/4.97；潭興街/巷道/4.98；潭興街107巷21弄/巷道/5.02；潭興街91巷1弄/巷道/6.85；潭興街91巷1弄/巷道/7.63；潭興街/巷道/8.53；潭興街107巷21弄/巷道/8.98；潭興街/巷道/10.96；潭興街/巷道/13.06；潭興街/巷道/13.42",
+    "中心點_lon": 121.42402,
+    "中心點_lat": 24.998409,
+    "頂點數": 25,
+    "來源": "twland.ronny.tw（easymap 2015 地籍）＋ OSM Overpass 2026-09-12",
+    "edges": [
+     {
+      "edge": 0,
+      "length_m": 0.55,
+      "nearest_road": "潭興街107巷21弄",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 4.97,
+      "fronting": true
+     },
+     {
+      "edge": 1,
+      "length_m": 0.54,
+      "nearest_road": "潭興街107巷21弄",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 5.02,
+      "fronting": true
+     },
+     {
+      "edge": 2,
+      "length_m": 0.54,
+      "nearest_road": "潭興街",
+      "highway": "residential",
+      "width_tag": "",
+      "dist_m": 4.98,
+      "fronting": true
+     },
+     {
+      "edge": 3,
+      "length_m": 0.55,
+      "nearest_road": "潭興街",
+      "highway": "residential",
+      "width_tag": "",
+      "dist_m": 4.47,
+      "fronting": true
+     },
+     {
+      "edge": 4,
+      "length_m": 0.54,
+      "nearest_road": "潭興街",
+      "highway": "residential",
+      "width_tag": "",
+      "dist_m": 3.98,
+      "fronting": true
+     },
+     {
+      "edge": 5,
+      "length_m": 0.54,
+      "nearest_road": "潭興街",
+      "highway": "residential",
+      "width_tag": "",
+      "dist_m": 3.53,
+      "fronting": true
+     },
+     {
+      "edge": 6,
+      "length_m": 0.53,
+      "nearest_road": "潭興街",
+      "highway": "residential",
+      "width_tag": "",
+      "dist_m": 3.12,
+      "fronting": true
+     },
+     {
+      "edge": 7,
+      "length_m": 0.55,
+      "nearest_road": "潭興街",
+      "highway": "residential",
+      "width_tag": "",
+      "dist_m": 2.74,
+      "fronting": true
+     },
+     {
+      "edge": 8,
+      "length_m": 0.54,
+      "nearest_road": "潭興街",
+      "highway": "residential",
+      "width_tag": "",
+      "dist_m": 2.4,
+      "fronting": true
+     },
+     {
+      "edge": 9,
+      "length_m": 0.54,
+      "nearest_road": "潭興街",
+      "highway": "residential",
+      "width_tag": "",
+      "dist_m": 2.12,
+      "fronting": true
+     },
+     {
+      "edge": 10,
+      "length_m": 0.54,
+      "nearest_road": "潭興街",
+      "highway": "residential",
+      "width_tag": "",
+      "dist_m": 1.9,
+      "fronting": true
+     },
+     {
+      "edge": 11,
+      "length_m": 0.54,
+      "nearest_road": "潭興街",
+      "highway": "residential",
+      "width_tag": "",
+      "dist_m": 1.73,
+      "fronting": true
+     },
+     {
+      "edge": 12,
+      "length_m": 0.55,
+      "nearest_road": "潭興街",
+      "highway": "residential",
+      "width_tag": "",
+      "dist_m": 1.61,
+      "fronting": true
+     },
+     {
+      "edge": 13,
+      "length_m": 0.54,
+      "nearest_road": "潭興街",
+      "highway": "residential",
+      "width_tag": "",
+      "dist_m": 1.56,
+      "fronting": true
+     },
+     {
+      "edge": 14,
+      "length_m": 53.06,
+      "nearest_road": "潭興街",
+      "highway": "residential",
+      "width_tag": "",
+      "dist_m": 1.05,
+      "fronting": true
+     },
+     {
+      "edge": 15,
+      "length_m": 6.14,
+      "nearest_road": "潭興街",
+      "highway": "residential",
+      "width_tag": "",
+      "dist_m": 2.42,
+      "fronting": true
+     },
+     {
+      "edge": 16,
+      "length_m": 6.08,
+      "nearest_road": "潭興街",
+      "highway": "residential",
+      "width_tag": "",
+      "dist_m": 8.53,
+      "fronting": false
+     },
+     {
+      "edge": 17,
+      "length_m": 0.52,
+      "nearest_road": "潭興街",
+      "highway": "residential",
+      "width_tag": "",
+      "dist_m": 13.06,
+      "fronting": false
+     },
+     {
+      "edge": 18,
+      "length_m": 1.51,
+      "nearest_road": "潭興街",
+      "highway": "residential",
+      "width_tag": "",
+      "dist_m": 13.42,
+      "fronting": false
+     },
+     {
+      "edge": 19,
+      "length_m": 19.68,
+      "nearest_road": "潭興街91巷1弄",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 7.63,
+      "fronting": true
+     },
+     {
+      "edge": 20,
+      "length_m": 5.53,
+      "nearest_road": "潭興街91巷1弄",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 0.05,
+      "fronting": true
+     },
+     {
+      "edge": 21,
+      "length_m": 16.17,
+      "nearest_road": "潭興街91巷1弄",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 6.85,
+      "fronting": true
+     },
+     {
+      "edge": 22,
+      "length_m": 5.72,
+      "nearest_road": "潭興街",
+      "highway": "residential",
+      "width_tag": "",
+      "dist_m": 10.96,
+      "fronting": false
+     },
+     {
+      "edge": 23,
+      "length_m": 16.34,
+      "nearest_road": "潭興街107巷21弄",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 8.98,
+      "fronting": false
+     },
+     {
+      "edge": 24,
+      "length_m": 3.37,
+      "nearest_road": "潭興街107巷21弄",
+      "highway": "service",
+      "width_tag": "",
+      "dist_m": 4.91,
+      "fronting": true
+     }
+    ]
+   }
+  }
+ ]
+}
